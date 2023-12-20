@@ -10,7 +10,7 @@
 # (code is shit u can learn how to do all this in an hour)
 
 # imports lol
-import subprocess, tkinter, requests, datetime, ctypes, json, time, sys, os, re; from colorama import Fore; from tkinter import filedialog;
+import subprocess, tkinter, ctypes, time, sys, os, re; from tkinter import filedialog;
 os.system('cls'); ctypes.windll.kernel32.SetConsoleTitleW("shame | pls dont skid!!");
 
 # paths of adb & ldconsole (needed for literally everything)
@@ -27,10 +27,6 @@ adb = "C:/LDPlayer/LDPlayer9/adb.exe"
 def listADB():
     r = subprocess.run(f"{adb} devices", capture_output=True, text=True)
     return [line.split('\t')[0] for line in r.stdout.strip().split('\n')[1:]];
-
-# literally just gets the time :skull:
-def getTime():
-    return datetime.datetime.now().strftime("%I:%M:%S");
 
 # roots the adb instances so that way u can actually do stuff in them
 def rootADB():
