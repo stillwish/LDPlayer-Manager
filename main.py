@@ -11,7 +11,7 @@
 
 # imports lol
 import subprocess, tkinter, ctypes, time, sys, os, re; from tkinter import filedialog;
-os.system('cls'); ctypes.windll.kernel32.SetConsoleTitleW("shame | pls dont skid!!");
+os.system('cls'); ctypes.windll.kernel32.SetConsoleTitleW("shame 1.0.1 | pls dont skid!!");
 
 # paths of adb & ldconsole (needed for literally everything)
 adb = "C:/LDPlayer/LDPlayer9/adb.exe"
@@ -57,14 +57,13 @@ def launchInstances():
         instances = listADB()
         
         # this is just to get the placeId & link code from a ps link
-        p = r'https://www\.roblox\.com/games/(\d+)/(?:[^?]+)?\?privateServerLinkCode=([a-zA-Z0-9_-]+)'
-        m = re.match(p, link)
+        m = re.match(r'https://www\.roblox\.com/games/(\d+)/(?:[^?]+)?\?privateServerLinkCode=([a-zA-Z0-9_\-]+)', link)
         if not m:
             return print("\ninvalid ps link");
 
         id = m.group(1); code = m.group(2)
         for instance in instances:
-            subprocess.run(f"{adb} -s {instance} shell am start -a android.intent.action.VIEW -d roblox://placeId={id}&linkcode={code}")
+            subprocess.run(["adb", "-s", instance, "shell", f'am start -a android.intent.action.VIEW -d "roblox://placeId={id}&linkcode={code}"'])
             print(f"launched into ps using {instance}");
         
         print("\nlaunched all instances into ps"); time.sleep(1.5); os.system('cls'); main();
@@ -75,13 +74,18 @@ def launchInstances():
 # install any apk you wanna install!!!
 def installApk():
     os.system('cls')
-    file = filedialog.askopenfilename(filetypes=[("APK files", "*.apk")]); filePath = os.path.abspath(file)
+    file = filedialog.askopenfilename(filetypes=[("APK files", "*.apk")])
+    filePath = os.path.abspath(file)
     instances = listADB()
-    for instance in instances:
-        subprocess.run(f"{adb} -s {instance} install {filePath}")
-        print(f"{file} installed on {instance}");
     
-    print(f"\n{file} installed on all instances"); time.sleep(1.5); os.system('cls'); main();
+    for instance in instances:
+        subprocess.run([adb, "-s", instance, "install", filePath], shell=True)
+        print(f"{filePath} installed on {instance}")
+    
+    print(f"\n{filePath} installed on all instances")
+    time.sleep(1.5)
+    os.system('cls')
+    main()
 
 # clones Storage/autoexec folder to autoexec for fluxus
 def cloneAutoexec():
@@ -140,7 +144,7 @@ def main():
     if option == 3:
         installApk()
     
-    if option is not [1, 2, 3]:
+    if option != [1,2,3]:
         main()
 
 main()
