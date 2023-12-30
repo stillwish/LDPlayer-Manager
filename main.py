@@ -11,7 +11,7 @@
 
 # imports lol
 import subprocess, tkinter, ctypes, time, sys, os, re; from tkinter import filedialog;
-os.system('cls'); ctypes.windll.kernel32.SetConsoleTitleW("shame 1.0.1 | pls dont skid!!");
+os.system('cls'); ctypes.windll.kernel32.SetConsoleTitleW("shame | pls dont skid!!");
 
 # paths of adb & ldconsole (needed for literally everything)
 adb = "C:/LDPlayer/LDPlayer9/adb.exe"
@@ -63,7 +63,7 @@ def launchInstances():
 
         id = m.group(1); code = m.group(2)
         for instance in instances:
-            subprocess.run(["adb", "-s", instance, "shell", f'am start -a android.intent.action.VIEW -d "roblox://placeId={id}&linkcode={code}"'])
+            subprocess.run([adb, "-s", instance, "shell", f'am start -a android.intent.action.VIEW -d "roblox://placeId={id}&linkcode={code}"'])
             print(f"launched into ps using {instance}");
         
         print("\nlaunched all instances into ps"); time.sleep(1.5); os.system('cls'); main();
